@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="small_center_container" style="max-width:500px;">
+    <form action="registration_handler" method="POST">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Логин</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="login" id="login" placeholder="login"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="password" class="col-sm-2 col-form-label">Пароль</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="password" id="password" placeholder="password"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Имя</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" id="name" placeholder="Иван">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="surname" class="col-sm-2 col-form-label">Фамилия</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="surname" id="surname" placeholder="Иванов">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-primary" style="text-align:center;">Зарегистрироваться</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

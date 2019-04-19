@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="small_center_container" style="max-width:768px;">
+    <form action="{{ url_for('edit_task') }}" method="POST">
+        <input type="hidden" name="task_id" value="{{ task[0] }}">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Название задачи</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" id="name" value="{{ task[1] }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="topic" class="col-sm-2 col-form-label">Тема</label>
+            <div class="col-sm-10">
+                <select name="topic" id="topic" value="{{ task[2] }}" class="form-control">
+                    <option value="геометрия">Геометрия</option>
+                    <option value="теория чисел">Теория чисел</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="difficulty" class="col-sm-2 col-form-label">Сложность</label>
+            <div class="col-sm-10">
+                <input type="number" min="1" max="5" step="1" class="form-control" name="difficulty" id="difficulty"
+                       value="{{ task[3] }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="statement" class="col-sm-2 col-form-label">Условие</label>
+            <div class="col-sm-10">
+                <textarea name="statement" id="statement" class="form-control">{{ task[4] }}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="solution" class="col-sm-2 col-form-label">Решение</label>
+            <div class="col-sm-10">
+                <textarea name="solution" id="solution" class="form-control">{{ task[5] }}</textarea>
+            </div>
+        </div>
+        .
+        <div class="form-group row">
+            <label for="answer" class="col-sm-2 col-form-label">Ответ</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="answer" id="answer" value="{{ task[6] }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="submit" class="btn btn-primary" style="text-align:center;">Изменить задачу</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
