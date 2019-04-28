@@ -2,6 +2,11 @@
 
 {% block content %}
 <div class="small_center_container">
+    {% if topic is not none %}
+    <h2>Задачи по теме {{ topics[topic] }}</h2>
+    <a href="{{ url_for('tasks_list') }}" class="btn btn-primary btn-block" role="button" style="margin-bottom:2%">
+        Сбросить фильтр темы</a>
+    {% endif %}
     {% if role >= 2 %}
     <a href="{{ url_for('add_task') }}" class="btn btn-primary btn-block" role="button" style="margin-bottom:2%">Добавить
         задачи</a>
@@ -20,13 +25,13 @@
         <tbody>
         {%for task in tasks_list%}
         <tr>
-            <td><a href="task/{{ task[0] }}">{{ task[0] }}</a></td>
+            <td><a href="{{ url_for('view_task', task_id = task[0]) }}">{{ task[0] }}</a></td>
             <td>{{ task[1] }}</td>
-            <td>{{ task[2] }}</td>
+            <td><a href="{{ url_for('tasks_list', topic = task[2]) }}">{{ topics[task[2]] }}</a></td>
             <td>{{ task[3] }}</td>
             {%if role >= 2%}
-            <td><a href="edit/{{ task[0] }}">Редактировать</a></td>
-            <td><a href="delete/{{ task[0] }}">Удалить</a></td>
+            <td><a href="{{ url_for('edit_task_form', task_id = task[0]) }}">Редактировать</a></td>
+            <td><a href="{{ url_for('delete_task', task_id = task[0]) }}">Удалить</a></td>
             {%endif%}
         </tr>
         {%endfor%}

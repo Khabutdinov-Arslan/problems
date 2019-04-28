@@ -17,6 +17,7 @@ app.secret_key = 'mellon'
 @app.context_processor
 def common_properties():
     data = dict()
+    data['topics'] = {'geometry': 'геометрия', 'number_theory': 'теория чисел'}
     if users_manager.is_logged():
         data['login'] = request.cookies.get('problems_login')
         data['role'] = users_manager.get_role()
@@ -107,7 +108,7 @@ def tasks_list(topic=None):
         notifiers.db_error()
         return redirect(url_for('main_page'))
 
-    return render_template('tasks.html', tasks_list=db_response['rows'])
+    return render_template('tasks.html', tasks_list=db_response['rows'], topic=topic)
 
 
 @app.route('/task/<task_id>')
