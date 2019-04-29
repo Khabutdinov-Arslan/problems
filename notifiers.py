@@ -57,3 +57,17 @@ def task_rejected():
 
 def task_already_solved():
     notify_success('Задача уже решена')
+
+
+def removed_from_cart():
+    notify_success('Задачи успешно удалены из корзины')
+
+def added_to_cart():
+    notify_success('Задачи успешно добавлены в корзину')
+
+
+def failed_to_remove_from_cart():
+    notify_error('Не удалось удалить задачу из корзины')
+
+def failed_to_add_to_cart():
+    notify_error('Не удалось добавить задачу в корзину')

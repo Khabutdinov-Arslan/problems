@@ -8,7 +8,9 @@ from flask import url_for
 import json
 import tasks_manager
 import users_manager
+import cart_manager
 import notifiers
+import sheets_manager
 
 app = Flask(__name__)
 app.secret_key = 'mellon'
@@ -205,6 +207,51 @@ def edit_task():
     if db_response['code'] != 0:
         notifiers.db_error()
     return redirect(url_for('tasks_list'))
+
+
+@app.route('/cart')
+def view_cart():
+    if not users_manager.is_teacher():
+        notifiers.permission_denied()
+        return redirect(url_for('tasks_list'))
+    db_response = json.loads(cart_manager.view_cart(request.cookies.get('problems_login')))
+    if db_response['code'] != 0:
+        notifiers.db_error()
+        return redirect(url_for('tasks_list'))
+    return render_template('cart.html', tasks_list=db_response['rows'])
+
+
+@app.route('/cart_remove', defaults={'task_id': None})
+@app.route('/cart_remove/<task_id>')
+def remove_from_cart(task_id):
+    if not users_manager.is_teacher():
+        notifiers.permission_denied()
+        return redirect(url_for('tasks_list'))
+    if cart_manager.remove_from_cart(task_id, request.cookies.get('problems_login')):
+        notifiers.removed_from_cart()
+        return redirect(url_for('view_cart'))
+    else:
+        notifiers.failed_to_remove_from_cart()
+        return redirect(url_for('tasks_list'))
+
+
+@app.route('/cart_add/<task_id>')
+def add_to_cart(task_id):
+    if not users_manager.is_teacher():
+        notifiers.permission_denied()
+        return redirect(url_for('tasks_list'))
+    if cart_manager.add_to_cart(task_id, request.cookies.get('problems_login')):
+        notifiers.added_to_cart()
+        return 'ok'
+    else:
+        notifiers.failed_to_add_to_cart()
+        return 'fail'
+
+
+@app.route('/print/<login>')
+def print_student_sheet(login):
+    filename = sheets_manager.generate_student_sheet(login)
+    return redirect(url_for('static', filename = './latex/' + filename + '.pdf'))
 
 
 @app.route('/rating')

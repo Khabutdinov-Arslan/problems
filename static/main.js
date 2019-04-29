@@ -15,6 +15,14 @@ $('#task_form').on('submit', function(e) {
     })
 });
 
+$('.add_to_cart_link').on('click', function(e){
+    e.preventDefault()
+    url = $(this).attr('href')
+    $.get(url, function(resp){
+        location.reload()
+    })
+})
+
 /*$('#task_form').submit(function(event){
     event.preventDefault();
     handler = $('#task_form').attr('action');

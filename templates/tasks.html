@@ -17,7 +17,10 @@
         <th scope="col">Имя задачи</th>
         <th scope="col">Тема</th>
         <th scope="col">Сложность</th>
-        {% if role >= 2 %}
+        {% if role == 1 %}
+        <th scope="col">Добавить</th>
+        {% endif %}
+        {% if role == 2 %}
         <th scope="col">Редактировать</th>
         <th scope="col">Удалить</th>
         {% endif %}
@@ -29,7 +32,10 @@
             <td>{{ task[1] }}</td>
             <td><a href="{{ url_for('tasks_list', topic = task[2]) }}">{{ topics[task[2]] }}</a></td>
             <td>{{ task[3] }}</td>
-            {%if role >= 2%}
+            {%if role == 1%}
+            <td><a href="{{ url_for('add_to_cart', task_id = task[0]) }}" class="add_to_cart_link">В корзину</a></td>
+            {%endif%}
+            {%if role == 2%}
             <td><a href="{{ url_for('edit_task_form', task_id = task[0]) }}">Редактировать</a></td>
             <td><a href="{{ url_for('delete_task', task_id = task[0]) }}">Удалить</a></td>
             {%endif%}
