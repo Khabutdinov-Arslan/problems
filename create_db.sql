@@ -11,8 +11,6 @@ create table if not exists problems.tasks
   answer     text
 );
 
-alter table problems.tasks
-  owner to postgres;
 
 create table if not exists problems.users
 (
@@ -24,9 +22,6 @@ create table if not exists problems.users
   surname  text,
   role     integer
 );
-
-alter table problems.users
-  owner to postgres;
 
 create table if not exists problems.users_tasks
 (
@@ -42,6 +37,16 @@ create table if not exists problems.users_tasks
     primary key (task_id, login)
 );
 
-alter table problems.users_tasks
-  owner to postgres;
+create table if not exists problems.cart
+(
+	task_id integer not null
+		constraint cart_task_id_fkey
+			references tasks,
+	login text not null
+		constraint cart_login_fkey
+			references users,
+	constraint cart_pkey
+		primary key (task_id, login)
+);
+
 
