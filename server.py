@@ -1,10 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import render_template
-from flask import make_response
-from flask import redirect
-from flask import session
-from flask import url_for
+from flask import Flask, request, render_template, make_response, redirect, session, url_for
 import json
 import tasks_manager
 import users_manager
@@ -19,7 +13,17 @@ app.secret_key = 'mellon'
 @app.context_processor
 def common_properties():
     data = dict()
-    data['topics'] = {'geometry': 'геометрия', 'number_theory': 'теория чисел'}
+    data['topics'] = {}
+    topics_list = json.loads(tasks_manager.get_topics_list())
+
+    if topics_list['code'] != 0:
+        notifiers.db_error()
+    else:
+        data['topics'] = topics_list['rows']
+        topics_dict = {}
+        for i in topics_list['rows']:
+            topics_dict[i[0]] = i[1]
+        data['topics_dict'] = topics_dict
     if users_manager.is_logged():
         data['login'] = request.cookies.get('problems_login')
         data['role'] = users_manager.get_role()
@@ -69,7 +73,7 @@ def registration_form():
 @app.route('/registration_handler', methods=['POST'])
 def registration_handler():
     resp = json.loads(users_manager.add_user(request.form['login'], request.form['password'], request.form['name'],
-                                             request.form['surname'], 0, 0))
+                                             request.form['surname'], 0))
     if resp['code'] == 0:
         notifiers.user_registered()
     else:
@@ -110,7 +114,7 @@ def tasks_list(topic=None):
         notifiers.db_error()
         return redirect(url_for('main_page'))
 
-    return render_template('tasks.html', tasks_list=db_response['rows'], topic=topic)
+    return render_template('tasks.html', tasks_list=db_response['rows'], selected_topic=topic)
 
 
 @app.route('/task/<task_id>')
@@ -163,7 +167,11 @@ def delete_task(task_id=None):
 
 @app.route('/add_task')
 def add_task():
-    return render_template('add_task.html')
+    if users_manager.is_admin():
+        return render_template('add_task.html')
+    else:
+        notifiers.permission_denied()
+        return redirect(url_for('tasks_list'))
 
 
 @app.route('/add_task_handler', methods=['POST'])
@@ -186,7 +194,7 @@ def add_task_form():
 def edit_task_form(task_id):
     if not users_manager.is_admin():
         notifiers.permission_denied()
-        return redirect(url_for('login_form'))
+        return redirect(url_for('tasks_list'))
     db_response = json.loads(tasks_manager.get_task(task_id))
     if len(db_response['rows']) == 0:
         notifiers.db_error()
@@ -204,6 +212,7 @@ def edit_task():
         tasks_manager.edit_task(request.form['task_id'], request.form['name'], request.form['topic'],
                                 request.form['difficulty'],
                                 request.form['statement'], request.form['solution'], request.form['answer']))
+    print(str(db_response))
     if db_response['code'] != 0:
         notifiers.db_error()
     return redirect(url_for('tasks_list'))

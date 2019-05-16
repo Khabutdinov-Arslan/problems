@@ -17,11 +17,11 @@ def generate_student_sheet(login):
                      "\\begin{document} \n" \
                      "\section*{Задачи} \n"
 
-
     query = "SELECT problems.tasks.statement FROM problems.cart " \
             "INNER JOIN problems.tasks ON problems.tasks.task_id = problems.cart.task_id " \
-            "WHERE login='" + login + "'"
-    db_response = json.loads(db.select_query(query))
+            "WHERE login=%s"
+    params = [login,]
+    db_response = json.loads(db.select_query(query, params))
     if db_response['code'] == 0:
         tasks_list = [i[0] for i in db_response['rows']]
         tasks_list = '\subsection{}' + '\n \n \subsection{}'.join(tasks_list)
@@ -35,4 +35,3 @@ def generate_student_sheet(login):
         return filename
     else:
         return None
-

@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="small_center_container">
-    {% if topic is not none %}
-    <h2>Задачи по теме {{ topics[topic] }}</h2>
+    {% if selected_topic is not none %}
+    <h2>Задачи по теме {{ topics_dict[selected_topic] }}</h2>
     <a href="{{ url_for('tasks_list') }}" class="btn btn-primary btn-block" role="button" style="margin-bottom:2%">
         Сбросить фильтр темы</a>
     {% endif %}
@@ -30,7 +30,7 @@
         <tr>
             <td><a href="{{ url_for('view_task', task_id = task[0]) }}">{{ task[0] }}</a></td>
             <td>{{ task[1] }}</td>
-            <td><a href="{{ url_for('tasks_list', topic = task[2]) }}">{{ topics[task[2]] }}</a></td>
+            <td><a href="{{ url_for('tasks_list', topic = task[2]) }}">{{ topics_dict[task[2]] }}</a></td>
             <td>{{ task[3] }}</td>
             {%if role == 1%}
             <td><a href="{{ url_for('add_to_cart', task_id = task[0]) }}" class="add_to_cart_link">В корзину</a></td>

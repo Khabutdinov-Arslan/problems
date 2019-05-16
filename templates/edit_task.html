@@ -13,9 +13,10 @@
         <div class="form-group row">
             <label for="topic" class="col-sm-2 col-form-label">Тема</label>
             <div class="col-sm-10">
-                <select name="topic" id="topic" value="{{ task[2] }}" class="form-control">
-                    <option value="геометрия">Геометрия</option>
-                    <option value="теория чисел">Теория чисел</option>
+                <select name="topic" id="topic" value="" class="form-control">
+                    {% for i in topics %}
+                        <option value="{{ i[0] }}">{{ i[1] }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
