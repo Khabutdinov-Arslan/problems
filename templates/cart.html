@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="small_center_container">
+    <h2>Корзина</h2>
+    <a href="{{ url_for('print_student_sheet', login = request.cookies.get('problems_login')) }}"
+       class="btn btn-primary btn-block" role="button" style="margin-bottom:2%" target="_blank">
+        Скачать PDF</a>
+    <a href="{{ url_for('remove_from_cart') }}" class="btn btn-primary btn-block" role="button"
+       style="margin-bottom:2%">
+        Очистить корзину</a>
+    <table class="table table-bordered">
+        <thead>
+        <th scope="col">Номер задачи</th>
+        <th scope="col">Название</th>
+        <th scope="col">Удалить</th>
+        </thead>
+        <tbody>
+        {%for task in tasks_list%}
+        <tr>
+            <td>{{ task[0] }}</td>
+            <td>{{ task[1] }}</td>
+            <td><a href="{{ url_for('remove_from_cart', task_id = task[0]) }}">Удалить</a></td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

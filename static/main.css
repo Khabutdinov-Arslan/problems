@@ -1,0 +1,15 @@
+.small_center_container{
+    padding:3%;
+    float:none;
+    max-width:768px;
+    margin:auto;
+}
+h1, h2, h3, h4, h5, h6{
+    text-align:center;
+}
+.card-header{
+    padding:0;
+}
+.statement{
+    padding: 5%;
+}

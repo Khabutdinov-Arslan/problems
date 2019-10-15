@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="small_center_container">
+    <table class="table table-bordered">
+        <thead>
+        <th scope="col">Логин</th>
+        <th scope="col">Рейтинг</th>
+        </thead>
+        <tbody>
+        {%for user in users_list%}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
