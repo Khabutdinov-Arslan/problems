@@ -1,4 +1,4 @@
-create schema problems;
+create schema if not exists problems;
 
 create table problems.users
 (
