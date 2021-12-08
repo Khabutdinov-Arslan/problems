@@ -1,6 +1,6 @@
 create schema problems;
 
-create table users
+create table problems.users
 (
 	login text not null
 		constraint users_pkey
@@ -11,7 +11,7 @@ create table users
 	role integer
 );
 
-create table topics
+create table problems.topics
 (
 	topic_id text not null
 		constraint topics_pkey
@@ -19,7 +19,7 @@ create table topics
 	name text
 );
 
-create table tasks
+create table problems.tasks
 (
 	task_id serial not null
 		constraint tasks_pkey
@@ -35,7 +35,7 @@ create table tasks
 	answer text
 );
 
-create table users_tasks
+create table problems.users_tasks
 (
 	task_id integer not null
 		constraint users_tasks_task_id_fkey
@@ -49,7 +49,7 @@ create table users_tasks
 		primary key (task_id, login)
 );
 
-create table cart
+create table problems.cart
 (
 	task_id integer not null
 		constraint cart_task_id_fkey
