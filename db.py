@@ -2,6 +2,7 @@ import psycopg2
 import config
 import psycopg2.extras
 import json
+import sys
 
 
 class Database:
@@ -16,6 +17,7 @@ class Database:
             self.cursor.execute(query, params)
             self.connection.commit()
         except Exception as e:
+            sys.stderr.write(str(e))
             return json.dumps({'code': 1, 'message': 'Database error' + str(e), 'rows': []})
         resp = json.dumps({'code': 0, 'message': 'Database succesfully updated', 'rows': []})
         return resp
@@ -24,6 +26,7 @@ class Database:
         try:
             self.cursor.execute(query, params)
         except Exception as e:
+            sys.stderr.write(str(e))
             return json.dumps({'code': 1, 'message': 'Database error' + str(e), 'rows': []})
         if self.cursor.rowcount == 0:
             response_rows = []
